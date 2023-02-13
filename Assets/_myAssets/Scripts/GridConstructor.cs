@@ -5,6 +5,7 @@ using UnityEngine;
 public class GridConstructor : MonoBehaviour
 {
 	public GameObject tilePrefab;
+	public GridManager gridManager;
 	public int gridSize;
 	public float gap;
 
@@ -15,15 +16,23 @@ public class GridConstructor : MonoBehaviour
 
 	private void CreateGrid()
 	{
-		for(int y = 0; y < gridSize; y++)
+		Tile[,] tiles = new Tile[gridSize, gridSize];
+
+		for (int y = 0; y < gridSize; y++)
 		{
 			for(int x = 0; x < gridSize; x++)
 			{
 				GameObject newTile = Instantiate(tilePrefab, transform);
-				newTile.GetComponent<Tile>().Initialize(x, y);
+
+				Tile tile = newTile.GetComponent<Tile>();
+				tile.Initialize(x, y);
+				tiles[x, y] = tile;
+
 				newTile.transform.position = new Vector3(x * gap, 0, y * gap);
 			}
 		}
+
+		gridManager.tiles = tiles;
 
 		RepositionCamera();
 	}
