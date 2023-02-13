@@ -373,7 +373,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 6609234742822899268, guid: 2fcf24a9333e16a4692cbd0282f22a36, type: 3}
   gridManager: {fileID: 1394282406}
-  gridSize: 5
+  gridSize: 8
   gap: 0.16
 --- !u!4 &1696122153
 Transform:

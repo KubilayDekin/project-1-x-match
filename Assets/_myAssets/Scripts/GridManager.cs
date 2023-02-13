@@ -18,7 +18,7 @@ public class GridManager : MonoBehaviour
 		BusSystem.OnTileMarked -= CheckNeighbourTiles;
 	}
 
-	private void CheckNeighbourTiles(int x, int y)
+	private void CheckNeighbourTiles()
 	{
 		int arrayLength = tiles.GetLength(0);
 
@@ -26,27 +26,22 @@ public class GridManager : MonoBehaviour
 		{
 			int markedNeighbourCount = 0;
 
+			int x = tile.x;
+			int y = tile.y;
+
 			if (tile.isMarked)
 			{
-				if (tile.x < arrayLength - 1 && tiles[tile.x + 1, tile.y].isMarked)
-				{
+				if (x < arrayLength - 1 && tiles[x + 1, y].isMarked)
 					markedNeighbourCount++;
-				}
 
-				if (tile.x > 0 && tiles[tile.x - 1, tile.y].isMarked)
-				{
+				if (x > 0 && tiles[x - 1, y].isMarked)
 					markedNeighbourCount++;
-				}
 
-				if (tile.y < arrayLength - 1 && tiles[tile.x, tile.y + 1].isMarked)
-				{
+				if (y < arrayLength - 1 && tiles[x, y + 1].isMarked)
 					markedNeighbourCount++;
-				}
 
-				if (tile.y > 0 && tiles[tile.x, tile.y - 1].isMarked)
-				{
+				if (y > 0 && tiles[x, y - 1].isMarked)
 					markedNeighbourCount++;
-				}
 
 				if (markedNeighbourCount >= 2)
 				{
@@ -62,31 +57,33 @@ public class GridManager : MonoBehaviour
 		int arrayLength = tiles.GetLength(0);
 
 		matchedTiles.Add(matchedTile);
-
 		matchedTile.isChecked = true;
 
-		if (matchedTile.x < arrayLength - 1 && tiles[matchedTile.x + 1, matchedTile.y].isMarked && !tiles[matchedTile.x + 1, matchedTile.y].isChecked)
+		int x = matchedTile.x;
+		int y = matchedTile.y;
+
+		if (x < arrayLength - 1 && tiles[x + 1, y].isMarked && !tiles[x + 1, y].isChecked)
 		{
-			matchedTiles.Add(tiles[matchedTile.x + 1, matchedTile.y]);
-			FindAllMatchedTiles(tiles[matchedTile.x + 1, matchedTile.y]);
+			matchedTiles.Add(tiles[x + 1, matchedTile.y]);
+			FindAllMatchedTiles(tiles[x + 1, matchedTile.y]);
 		}
 
-		if (matchedTile.x > 0 && tiles[matchedTile.x - 1, matchedTile.y].isMarked && !tiles[matchedTile.x - 1, matchedTile.y].isChecked)
+		if (x > 0 && tiles[x - 1, y].isMarked && !tiles[x - 1, y].isChecked)
 		{
-			matchedTiles.Add(tiles[matchedTile.x - 1, matchedTile.y]);
-			FindAllMatchedTiles(tiles[matchedTile.x - 1, matchedTile.y]);
+			matchedTiles.Add(tiles[x - 1, y]);
+			FindAllMatchedTiles(tiles[x - 1, y]);
 		}
 
-		if (matchedTile.y < arrayLength - 1 && tiles[matchedTile.x, matchedTile.y + 1].isMarked && !tiles[matchedTile.x, matchedTile.y + 1].isChecked)
+		if (matchedTile.y < arrayLength - 1 && tiles[x, y + 1].isMarked && !tiles[x, y + 1].isChecked)
 		{
-			matchedTiles.Add(tiles[matchedTile.x, matchedTile.y + 1]);
-			FindAllMatchedTiles(tiles[matchedTile.x, matchedTile.y + 1]);
+			matchedTiles.Add(tiles[x, y + 1]);
+			FindAllMatchedTiles(tiles[x, y + 1]);
 		}
 
-		if (matchedTile.y > 0 && tiles[matchedTile.x, matchedTile.y - 1].isMarked && !tiles[matchedTile.x, matchedTile.y - 1].isChecked)
+		if (matchedTile.y > 0 && tiles[x, y - 1].isMarked && !tiles[x, y - 1].isChecked)
 		{
-			matchedTiles.Add(tiles[matchedTile.x, matchedTile.y - 1]);
-			FindAllMatchedTiles(tiles[matchedTile.x, matchedTile.y - 1]);
+			matchedTiles.Add(tiles[x, y - 1]);
+			FindAllMatchedTiles(tiles[x, y - 1]);
 		}
 
 		foreach(Tile tile in matchedTiles)

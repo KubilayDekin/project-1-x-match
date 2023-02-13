@@ -6,8 +6,8 @@ public static class BusSystem
 	#endregion
 
 	#region Gameplay Actions
-	public static Action<int,int> OnTileMarked;
-	public static void CallOnTileMarked(int x , int y) { OnTileMarked?.Invoke(x, y); }
+	public static Action OnTileMarked;
+	public static void CallOnTileMarked() { OnTileMarked?.Invoke(); }
 
 	public static Action OnMatch;
 	public static void CallOnMatch() { OnMatch?.Invoke(); }

@@ -34,7 +34,7 @@ public class Tile : MonoBehaviour
 
 		isMarked = true;
 		xSprite.SetActive(true);
-		BusSystem.CallOnTileMarked(x, y);
+		BusSystem.CallOnTileMarked();
 	}
 
 	public void ResetTile()
