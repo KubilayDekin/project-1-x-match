@@ -7,7 +7,7 @@ public class Tile : MonoBehaviour
 	public GameObject xSprite;
 
 	[HideInInspector]
-	public bool isMarked;
+	public bool isMarked, isChecked;
 	[HideInInspector]
 	public int x, y;
 
@@ -40,6 +40,7 @@ public class Tile : MonoBehaviour
 	public void ResetTile()
 	{
 		isMarked = false;
+		isChecked = false;
 		xSprite.SetActive(false);
 	}
 }

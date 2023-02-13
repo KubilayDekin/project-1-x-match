@@ -6,6 +6,8 @@ public class GridManager : MonoBehaviour
 {
 	public Tile[,] tiles;
 
+	private HashSet<Tile> matchedTiles = new HashSet<Tile>();
+
 	private void OnEnable()
 	{
 		BusSystem.OnTileMarked += CheckNeighbourTiles;
@@ -23,46 +25,75 @@ public class GridManager : MonoBehaviour
 		foreach(Tile tile in tiles)
 		{
 			int markedNeighbourCount = 0;
-			List<Tile> matchedTiles = new List<Tile>();
 
 			if (tile.isMarked)
 			{
-				matchedTiles.Add(tile);
-
 				if (tile.x < arrayLength - 1 && tiles[tile.x + 1, tile.y].isMarked)
 				{
 					markedNeighbourCount++;
-					matchedTiles.Add(tiles[tile.x + 1, tile.y]);
 				}
 
 				if (tile.x > 0 && tiles[tile.x - 1, tile.y].isMarked)
 				{
 					markedNeighbourCount++;
-					matchedTiles.Add(tiles[tile.x - 1, tile.y]);
 				}
 
 				if (tile.y < arrayLength - 1 && tiles[tile.x, tile.y + 1].isMarked)
 				{
 					markedNeighbourCount++;
-					matchedTiles.Add(tiles[tile.x, tile.y + 1]);
 				}
 
 				if (tile.y > 0 && tiles[tile.x, tile.y - 1].isMarked)
 				{
 					markedNeighbourCount++;
-					matchedTiles.Add(tiles[tile.x, tile.y - 1]);
 				}
 
 				if (markedNeighbourCount >= 2)
 				{
-					for(int i = 0; i < matchedTiles.Count; i++)
-						matchedTiles[i].ResetTile();
-
-					matchedTiles.Clear();
-
+					FindAllMatchedTiles(tile);
 					break;
 				}
 			}
 		}
+	}
+
+	private void FindAllMatchedTiles(Tile matchedTile)
+	{
+		int arrayLength = tiles.GetLength(0);
+
+		matchedTiles.Add(matchedTile);
+
+		matchedTile.isChecked = true;
+
+		if (matchedTile.x < arrayLength - 1 && tiles[matchedTile.x + 1, matchedTile.y].isMarked && !tiles[matchedTile.x + 1, matchedTile.y].isChecked)
+		{
+			matchedTiles.Add(tiles[matchedTile.x + 1, matchedTile.y]);
+			FindAllMatchedTiles(tiles[matchedTile.x + 1, matchedTile.y]);
+		}
+
+		if (matchedTile.x > 0 && tiles[matchedTile.x - 1, matchedTile.y].isMarked && !tiles[matchedTile.x - 1, matchedTile.y].isChecked)
+		{
+			matchedTiles.Add(tiles[matchedTile.x - 1, matchedTile.y]);
+			FindAllMatchedTiles(tiles[matchedTile.x - 1, matchedTile.y]);
+		}
+
+		if (matchedTile.y < arrayLength - 1 && tiles[matchedTile.x, matchedTile.y + 1].isMarked && !tiles[matchedTile.x, matchedTile.y + 1].isChecked)
+		{
+			matchedTiles.Add(tiles[matchedTile.x, matchedTile.y + 1]);
+			FindAllMatchedTiles(tiles[matchedTile.x, matchedTile.y + 1]);
+		}
+
+		if (matchedTile.y > 0 && tiles[matchedTile.x, matchedTile.y - 1].isMarked && !tiles[matchedTile.x, matchedTile.y - 1].isChecked)
+		{
+			matchedTiles.Add(tiles[matchedTile.x, matchedTile.y - 1]);
+			FindAllMatchedTiles(tiles[matchedTile.x, matchedTile.y - 1]);
+		}
+
+		foreach(Tile tile in matchedTiles)
+		{
+			tile.ResetTile();
+		}
+
+		matchedTiles.Clear();
 	}
 }
