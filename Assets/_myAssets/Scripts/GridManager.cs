@@ -18,33 +18,51 @@ public class GridManager : MonoBehaviour
 
 	private void CheckNeighbourTiles(int x, int y)
 	{
-		int markedNeighbourCount = 0;
 		int arrayLength = tiles.GetLength(0);
 
-		if (x < arrayLength - 1 && tiles[x + 1, y].isMarked)
+		foreach(Tile tile in tiles)
 		{
-			markedNeighbourCount++;
-		}
+			int markedNeighbourCount = 0;
+			List<Tile> matchedTiles = new List<Tile>();
 
-		if (x > 0 && tiles[x - 1, y].isMarked)
-		{
-			markedNeighbourCount++;
-		}
+			if (tile.isMarked)
+			{
+				matchedTiles.Add(tile);
 
-		if (y < arrayLength - 1 && tiles[x, y + 1].isMarked)
-		{
-			markedNeighbourCount++;
-		}
+				if (tile.x < arrayLength - 1 && tiles[tile.x + 1, tile.y].isMarked)
+				{
+					markedNeighbourCount++;
+					matchedTiles.Add(tiles[tile.x + 1, tile.y]);
+				}
 
-		if (y > 0 && tiles[x, y - 1].isMarked)
-		{
-			markedNeighbourCount++;
-		}
+				if (tile.x > 0 && tiles[tile.x - 1, tile.y].isMarked)
+				{
+					markedNeighbourCount++;
+					matchedTiles.Add(tiles[tile.x - 1, tile.y]);
+				}
 
-		if (markedNeighbourCount > 2)
-		{
-			BusSystem.CallOnMatch();
-		}
+				if (tile.y < arrayLength - 1 && tiles[tile.x, tile.y + 1].isMarked)
+				{
+					markedNeighbourCount++;
+					matchedTiles.Add(tiles[tile.x, tile.y + 1]);
+				}
 
+				if (tile.y > 0 && tiles[tile.x, tile.y - 1].isMarked)
+				{
+					markedNeighbourCount++;
+					matchedTiles.Add(tiles[tile.x, tile.y - 1]);
+				}
+
+				if (markedNeighbourCount >= 2)
+				{
+					for(int i = 0; i < matchedTiles.Count; i++)
+						matchedTiles[i].ResetTile();
+
+					matchedTiles.Clear();
+
+					break;
+				}
+			}
+		}
 	}
 }

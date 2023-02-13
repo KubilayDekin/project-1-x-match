@@ -5,12 +5,11 @@ using UnityEngine;
 public class Tile : MonoBehaviour
 {
 	public GameObject xSprite;
+
 	[HideInInspector]
 	public bool isMarked;
-
-
-	private int x;
-	private int y;
+	[HideInInspector]
+	public int x, y;
 
 	private void OnEnable()
 	{
@@ -38,8 +37,9 @@ public class Tile : MonoBehaviour
 		BusSystem.CallOnTileMarked(x, y);
 	}
 
-	private void ResetTile()
+	public void ResetTile()
 	{
-
+		isMarked = false;
+		xSprite.SetActive(false);
 	}
 }
